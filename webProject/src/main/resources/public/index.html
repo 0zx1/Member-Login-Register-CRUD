@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Login </title>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+
+	<link rel='stylesheet'
+		href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900|RobotoDraft:400,100,300,500,700,900'>
+	<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+
+	<link rel="stylesheet" href="css/style.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+	<script>
+		$.ajax({
+			url: "session/checklogin",
+			type: "post",
+			async: false,
+			// data: null,
+			// processData: false, // 告诉jQuery不要去处理发送的数据
+			// contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+			// dataType: 'text',
+			success: function (data) {
+				console.log("有成功")
+				console.log(data)
+				if (data == "true") {
+					location.href = "member.html"
+				}
+			},
+			error: function (data) {
+				console.log("失敗")
+
+			}
+		});
+	</script>
+
+
+	<!-- Form Mixin-->
+	<!-- Input Mixin-->
+	<!-- Button Mixin-->
+	<!-- Pen Title-->
+	<div class="pen-title">
+		<h1>Login</h1><span>Pen <i class='fa fa-paint-brush'></i> + <i class='fa fa-code'></i> <a href=''></a></span>
+	</div>
+	<!-- Form Module-->
+	<div class="module form-module">
+		<div class="toggle"><i class="fa fa-times fa-pencil"></i>
+			<div class="tooltip">Click Me</div>
+		</div>
+		<div class="form">
+			<h2>Login to your account</h2>
+
+			<input type="text" placeholder="Username" id="acc" name="account" value="" />
+			<input type="password" placeholder="Password" id="password" name="password" value="" />
+			<button type="submit" id="sub">Login</button>
+
+		</div>
+		<div class="form">
+			<h2>Create an account</h2>
+			<form>
+				<input type="text" id="accountr" name="accountr" value="" placeholder="Username" />
+				<input type="password" id="passwordr" name="passwordr" value="" placeholder="Password" />
+				<input type="text" id="realname" name="realname" value="" placeholder="Realname" />
+
+				<button type="submit" id="reg">Register</button>
+			</form>
+		</div>
+		<!-- <div class="cta"><a href="">Forgot your password?</a></div> -->
+	</div>
+	<script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
+	<script>
+		$('.toggle').click(function () {
+			// Switches the Icon
+			$(this).children('i').toggleClass('fa-pencil');
+			// Switches the forms  
+			$('.form').animate({
+				height: "toggle",
+				'padding-top': 'toggle',
+				'padding-bottom': 'toggle',
+				opacity: "toggle"
+			}, "slow");
+		});
+
+
+
+		// //login測試
+		// $("#sub").click(function () {
+
+		// 	var acc = $("#acc").val()
+		//             var password = $("#password").val()
+
+		//             $.ajax({
+		//                 url: "login/login",
+		//                 type: "post",
+		//                 data: {
+		// 					acc: acc,
+		//                     password: password
+		//                 },
+
+		//                 // processData: false, // 告诉jQuery不要去处理发送的数据
+		//                 // contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+		//                 // dataType: 'text',
+		//                 success: function (data) {
+		//                     console.log("有成功")
+		//                     console.log(data)
+		//                     if(data == "true"){
+		//                     location.href = "/member.html"
+		//                     }else{
+		//                         alert("帳號或密碼錯誤")
+		//                     }
+		//                 },
+		//                 error: function (data) {
+		//                     console.log("失敗")
+
+		//                 }
+		//             });
+
+		//         })
+
+
+
+
+
+
+
+		//登入
+		$('#sub').click(function () {
+
+			$.ajax({
+				method: "POST",
+				url: "session/login",
+				dataType: "JSON",
+				contentType: 'application/json;charset=utf-8',
+				data: JSON.stringify({
+					account: $('input[name = "account"]').val(),
+					password: $('input[name = "password"]').val(),
+				}),
+
+				error: function () {
+
+					//資料傳送失敗後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+					alert("帳號或密碼錯誤");
+
+				},
+
+				//傳送成功則跳出成功訊息
+
+				success: function (data) {
+
+					console.log("成功訊息", data)
+					//資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+					if (data == true) {
+						console.log("OK")
+						location.href = "/member.html"
+
+					} else {
+						alert("帳號或密碼錯誤")
+					}
+
+				}
+			})
+		})
+
+
+		//註冊
+		$('#reg').click(function () {
+
+			$.ajax({
+				method: "POST",
+				url: "login/c",
+				// dataType: "JSON",
+				contentType: 'application/json;charset=utf-8',
+
+				data: JSON.stringify({
+					account: $('input[name = "accountr"]').val(),
+					password: $('input[name = "passwordr"]').val(),
+					realname: $('input[name = "realname"]').val(),
+
+				}),
+
+
+
+				error: function () {
+
+					//資料傳送失敗後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+					alert("失敗");
+
+				},
+
+				//傳送成功則跳出成功訊息
+
+				success: function () {
+
+					//資料傳送成功後就會執行這個function內的程式，可以在這裡寫入要執行的程式  
+					alert("成功");
+
+				}
+			})
+		})
+
+
+
+
+
+
+	</script>
+
+
+
+
+
+
+
+</body>
+
+</html>
